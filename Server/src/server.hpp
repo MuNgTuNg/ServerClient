@@ -2,6 +2,7 @@
 #include<iostream>
 #include <vector>
 #include <thread>
+#include <assert.h>
 
 #include <stdio.h>
 #include <sys/socket.h>
@@ -27,49 +28,35 @@ struct Socket{
     int error;
     bool accepted;
     struct sockaddr_in address;
+    std::string name;
     
 };
 
 
+
+
+
 class Server{
    public:
-    Server(int portIN, const std::string& ipIN) : port(portIN),ip(ipIN) {
-        //sock stream connection
-    
-        serverFD = socket(AF_INET,SOCK_STREAM,0);
-
-        //set up the address
-        address = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
-        address->sin_family = AF_INET;
-        address->sin_port = htons(port);
-
-        if(strlen(ip.c_str()) ==0) //if no IP chosen just use any
-            address->sin_addr.s_addr = INADDR_ANY;
-        else //convert IP address to binary
-            inet_pton(AF_INET,ip.c_str(),&address->sin_addr.s_addr);
-        
-
-        //bind socket to the address
-        int res = bind(serverFD,(const sockaddr*)address,sizeof(*address));
-        
-        if(res != 0)
-            printf("Server bind unsuccessful\n");
-        
-        //mark this socket as a passive socket, that waits for incoming connections
-        res = listen(serverFD,10);
-        
-    }
-
+    Server(int portIN, const std::string& ipIN);
     void run();
+    
 
     void acceptConnection(Socket& client, int serverFD);
+    void processData(Socket client);
+    void sendMessageToAllClients(char* buffer, int serverFD);
+    void printClientData(Socket client);
+    void takeInput();
+    ~Server();
 
-    ~Server() { 
-        shutdown(serverFD,SHUT_RDWR);
-        delete address;
-    }
+     //TODO:: make this work
+    // struct serverData {
+    //     char buffer[1024]; 
+    // };
+    
+    // static serverData data;
 
-    int fd() const { return serverFD; }
+
 
    private:
     //take in port and IP at runtime: TODO::add reading from a file to do this
@@ -77,9 +64,10 @@ class Server{
     std::string ip = "127.0.1.1";
     int serverFD;
     struct sockaddr_in  *address = nullptr;
-    
-    std::vector<Socket> clients;
 
+    
+    static std::vector<Socket> clients;
+    std::string input;
     
 };
 
