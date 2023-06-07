@@ -1,7 +1,7 @@
 #include <client.hpp>
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    shb::clientDriverCode();
+    shb::clientDriverCode(argv[0],argv[1]);
     return 0;
 }

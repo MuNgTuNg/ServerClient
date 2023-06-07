@@ -154,8 +154,8 @@ void Server::run(){
 }
 
 //create server and spin it up TODO:: take in IP and Port
-void serverDriverCode(){
-    Server server{8093,"127.0.1.1"};
+void serverDriverCode(int port, std::string address){
+    Server server{port,address};
     server.run();
 }
 
