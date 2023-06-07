@@ -2,6 +2,6 @@
 
 
 int main(int argc, char* argv[]) {
-    shb::serverDriverCode(argv[0],argv[1]);
+    shb::serverDriverCode(atoi(argv[1]),argv[2]);
     return 0;
 }
