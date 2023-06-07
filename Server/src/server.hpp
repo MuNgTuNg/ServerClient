@@ -72,6 +72,6 @@ class Server{
 };
 
 
-void serverDriverCode();
+void serverDriverCode(int, std::string);
 
 } //namespace shb

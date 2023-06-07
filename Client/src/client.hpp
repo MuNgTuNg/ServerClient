@@ -50,7 +50,7 @@ class Client{
 
 };
 
-void clientDriverCode();
+void clientDriverCode(int, std::string);
 
 
 } //namespace shb
